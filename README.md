@@ -1,6 +1,11 @@
 # HowTo
 
+Auto clicker for the Mystic Forge to click on Forge adn Refill buttons.
+With random time delay and random movement.
+
 ## Install
+
+Python 3.10+
 
 ```bash
 pip install -e .
