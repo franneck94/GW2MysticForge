@@ -35,21 +35,21 @@ def main() -> None:
             x, y = forge_btn_x, forge_btn_y
             for action in ACTIONS:
                 dx, dy = action["move"]
-                dx += random.randint(-MOVE_OFFSET_X, MOVE_OFFSET_X)
-                dy += random.randint(-MOVE_OFFSET_Y, MOVE_OFFSET_Y)
+                dx += random.randint(-MOVE_OFFSET_X, MOVE_OFFSET_X)  # noqa: S311
+                dy += random.randint(-MOVE_OFFSET_Y, MOVE_OFFSET_Y)  # noqa: S311
                 x += dx
                 y += dy
                 pyautogui.moveTo(
                     x,
                     y,
-                    duration=random.uniform(0.15, 0.35),
+                    duration=random.uniform(0.15, 0.35),  # noqa: S311
                     tween=pyautogui.easeInOutQuad,
                 )
-                time.sleep(random.uniform(0.5, 0.7))
+                time.sleep(random.uniform(0.5, 0.7))  # noqa: S311
                 if action["click"]:
                     pyautogui.doubleClick()
-                    time.sleep(random.uniform(0.5, 0.7))
-            time.sleep(random.uniform(0.9, 1.1))
+                    time.sleep(random.uniform(0.5, 0.7))  # noqa: S311
+            time.sleep(random.uniform(0.9, 1.1))  # noqa: S311
     except KeyboardInterrupt:
         print("Stopped by user.")
 

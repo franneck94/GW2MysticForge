@@ -7,6 +7,7 @@ This ensures the main() function is called properly when run as an executable.
 import sys
 import traceback
 
+
 try:
     from mystic_forge import main
 except ImportError as e:
@@ -15,11 +16,11 @@ except ImportError as e:
     sys.exit(1)
 
 
-def run():
+def run() -> None:
     """Main entry point with error handling."""
     try:
         main()
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         print(f"Error running mystic_forge: {e}")
         print("\nFull traceback:")
         traceback.print_exc()
