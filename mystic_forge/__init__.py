@@ -15,7 +15,7 @@ MOVE_OFFSET_Y = 10
 time.sleep(3)
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description="Automated clicker script.")
     parser.add_argument(
         "-n",
