@@ -7,8 +7,8 @@ where = ["."]
 
 [project]
 name = "mystic_forge"
-version = "0.2.0"
-dependencies = ["pyautogui"]
+version = "1.0.0"
+dependencies = ["pyautogui", "pynput"]
 
 [project.scripts]
 mystic_forge = "mystic_forge:main"
