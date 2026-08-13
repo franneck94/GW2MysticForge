@@ -23,14 +23,14 @@ if exist "build" rmdir /s /q build
 
 REM Build the executable
 echo Building executable with PyInstaller...
-pyinstaller mystic_forge.spec
+pyinstaller GW2_Forge.spec
 
 REM Check if build was successful
-if exist "dist\mystic_forge.exe" (
+if exist "dist\GW2_Forge.exe" (
     echo.
     echo ===================================
     echo Build completed successfully!
-    echo Executable location: dist\mystic_forge.exe
+    echo Executable location: dist\GW2_Forge.exe
     echo ===================================
     echo.
     echo You can now distribute the contents of the 'dist' folder to users.
