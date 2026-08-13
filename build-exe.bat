@@ -42,5 +42,8 @@ if exist "dist\mystic_forge.exe" (
     echo ===================================
 )
 
+REM Copy to D:\GW2\addons\GW2TP
+xcopy /E /I dist D:\GW2\addons\GW2TP
+
 echo.
 pause
