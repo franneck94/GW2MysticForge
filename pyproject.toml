@@ -7,23 +7,11 @@ where = ["."]
 
 [project]
 name = "mystic_forge"
-version = "1.0.0"
+version = "2.0.0"
 dependencies = ["pyautogui", "pynput"]
 
 [project.scripts]
 mystic_forge = "mystic_forge:main"
-
-[tool.black]
-target-version = ['py310']
-line-length = 80
-skip-string-normalization = false
-skip-magic-trailing-comma = false
-force-exclude = '''
-/(
-  | docs
-  | setup.py
-)/
-'''
 
 [tool.isort]
 py_version = 310
@@ -32,7 +20,6 @@ default_section = "THIRDPARTY"
 known_third_party = []
 known_first_party = []
 known_local_folder = []
-# style: black
 multi_line_output = 3
 include_trailing_comma = true
 force_grid_wrap = 0

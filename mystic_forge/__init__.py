@@ -1,6 +1,7 @@
 import argparse
 import random
 import threading
+import sys
 import time
 from collections.abc import Callable
 from pathlib import Path
@@ -133,13 +134,21 @@ def main() -> None:
         print("Stopped by user.")
     finally:
         pygame.mixer.init()
-        mp3_path = Path(__file__).parent.parent / "media" / "stop.mp3"
+        if getattr(sys, "frozen", False):
+            print("frozen dir")
+            mp3_path = Path(sys._MEIPASS) / "media" / "stop.mp3"  # type: ignore
+        else:
+            mp3_path = Path(__file__).parent.parent / "media" / "stop.mp3"
+
         if mp3_path.exists():
+            print("playing sound")
             pygame.mixer.music.load(str(mp3_path))
             pygame.mixer.music.play()
 
             while pygame.mixer.music.get_busy():
                 time.sleep(1.0)
+        else:
+            print(f"File not found {mp3_path}")
 
         listener.stop()
         listener.join(timeout=1.0)
