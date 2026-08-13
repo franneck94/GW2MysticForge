@@ -2,9 +2,11 @@ import argparse
 import random
 import threading
 import time
-from typing import Callable
+from collections.abc import Callable
+from pathlib import Path
 
 import pyautogui
+import pygame
 from pynput import keyboard
 
 
@@ -24,10 +26,9 @@ def _create_stop_listener(stop_event: threading.Event) -> keyboard.Listener:
     c_pressed = False
 
     def on_press(key: keyboard.Key | keyboard.KeyCode | None) -> bool:
-        nonlocal ctrl_pressed
-        nonlocal c_pressed
+        nonlocal ctrl_pressed, c_pressed
 
-        if key in (keyboard.Key.ctrl, keyboard.Key.ctrl_l, keyboard.Key.ctrl_r):
+        if key in {keyboard.Key.ctrl, keyboard.Key.ctrl_l, keyboard.Key.ctrl_r}:
             ctrl_pressed = True
             print("Ctrl key pressed.")
         if key == keyboard.KeyCode.from_char("c"):
@@ -41,10 +42,9 @@ def _create_stop_listener(stop_event: threading.Event) -> keyboard.Listener:
         return True
 
     def on_release(key: keyboard.Key | keyboard.KeyCode | None) -> bool:
-        nonlocal ctrl_pressed
-        nonlocal c_pressed
+        nonlocal ctrl_pressed, c_pressed
 
-        if key in (keyboard.Key.ctrl, keyboard.Key.ctrl_l, keyboard.Key.ctrl_r):
+        if key in {keyboard.Key.ctrl, keyboard.Key.ctrl_l, keyboard.Key.ctrl_r}:
             ctrl_pressed = False
         if key == keyboard.KeyCode.from_char("c"):
             c_pressed = False
@@ -57,14 +57,13 @@ def _create_stop_listener(stop_event: threading.Event) -> keyboard.Listener:
 def run_iterations(
     num_iterations: int,
     stop_event: threading.Event | None = None,
-    pyautogui_module=pyautogui,
     sleep_func: Callable[[float], None] = time.sleep,
-    debug_mode: bool = False,
+    debug_mode: bool = False,  # noqa: FBT001, FBT002
 ) -> None:
     if stop_event is None:
         stop_event = threading.Event()
 
-    forge_btn_x, forge_btn_y = pyautogui_module.position()
+    forge_btn_x, forge_btn_y = pyautogui.position()
 
     try:
         for i in range(num_iterations):
@@ -88,10 +87,9 @@ def run_iterations(
                 sleep_func(random.uniform(0.5, 0.7))  # noqa: S311
                 if stop_event.is_set():
                     break
-                if not debug_mode:
-                    if action["click"]:
-                        pyautogui_module.doubleClick()
-                        sleep_func(random.uniform(0.5, 0.7))  # noqa: S311
+                if not debug_mode and action["click"]:
+                    pyautogui_module.doubleClick()
+                    sleep_func(random.uniform(0.5, 0.7))  # noqa: S311
                 if stop_event.is_set():
                     break
             if stop_event.is_set():
@@ -108,8 +106,8 @@ def main() -> None:
         "-n",
         "--num_iterations",
         type=int,
+        default=0,
         help="Number of iterations to run",
-        required=True,
     )
     parser.add_argument(
         "--debug",
@@ -134,6 +132,15 @@ def main() -> None:
         stop_event.set()
         print("Stopped by user.")
     finally:
+        pygame.mixer.init()
+        mp3_path = Path(__file__).parent.parent / "media" / "stop.mp3"
+        if mp3_path.exists():
+            pygame.mixer.music.load(str(mp3_path))
+            pygame.mixer.music.play()
+
+            while pygame.mixer.music.get_busy():
+                time.sleep(1.0)
+
         listener.stop()
         listener.join(timeout=1.0)
 
